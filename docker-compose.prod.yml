@@ -4,12 +4,10 @@
 # Этот файл НЕ собирает образы локально, а скачивает их из DockerHub.
 # Используйте на продакшн-сервере:
 #   docker compose -f docker-compose.prod.yml up -d
-#
-# Перед запуском:
-#   1. Скопируйте .env.example → .env и заполните все значения
 # =======================================================
 
 services:
+  # 1. Бот (Python / aiogram)
   bot:
     image: lecannik/speech-to-text-bot:${IMAGE_TAG:-latest}
     container_name: stt_bot
@@ -17,9 +15,21 @@ services:
     env_file: [.env]
     environment:
       - PYTHONUNBUFFERED=1
-      - HF_HOME=/app/models  # Указываем путь для кэширования моделей Hugging Face (Whisper)
+      - HF_HOME=/app/models  # Путь для кэширования Whisper-моделей
     volumes:
       - models_data:/app/models
+    depends_on:
+      - ollama
+    networks:
+      - bot_network
+
+  # 2. Локальный сервер LLM (Ollama)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: stt_ollama
+    restart: always
+    volumes:
+      - ollama_data:/root/.ollama
     networks:
       - bot_network
 
@@ -29,3 +39,4 @@ networks:
 
 volumes:
   models_data:
+  ollama_data:

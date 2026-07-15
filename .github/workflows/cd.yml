@@ -70,6 +70,8 @@ jobs:
           echo "WHISPER_MODEL_SIZE=medium" >> .env
           echo "WHISPER_DEVICE=cpu" >> .env
           echo "WHISPER_COMPUTE_TYPE=int8" >> .env
+          echo "OLLAMA_HOST=http://ollama:11434" >> .env
+          echo "OLLAMA_MODEL=qwen2.5:3b" >> .env
 
       - name: Copy config files to server
         run: |
