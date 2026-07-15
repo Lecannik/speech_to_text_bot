@@ -7,8 +7,9 @@
 # Требуемые GitHub Secrets (настраиваются на уровне организации или репозитория):
 #   DOCKERHUB_USERNAME — логин DockerHub
 #   DOCKERHUB_TOKEN   — Access Token (PAT)
-#   TELEGRAM_BOT_TOKEN — Токен бота для уведомлений о деплое
+#   TELEGRAM_BOT_TOKEN — Токен служебного бота для уведомлений о деплое
 #   TELEGRAM_CHAT_ID   — ID чата для уведомлений о деплое
+#   BOT_TOKEN          — Токен основного рабочего бота для создания .env файла
 # =======================================================
 
 name: CD — Build, Push & Deploy
@@ -63,10 +64,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Create .env file from GitHub Secrets
+        run: |
+          echo "BOT_TOKEN=${{ secrets.BOT_TOKEN }}" > .env
+          echo "WHISPER_MODEL_SIZE=medium" >> .env
+          echo "WHISPER_DEVICE=cpu" >> .env
+          echo "WHISPER_COMPUTE_TYPE=int8" >> .env
+
       - name: Copy config files to server
         run: |
           ssh -o StrictHostKeyChecking=no nik@192.168.20.29 "mkdir -p /opt/speech-to-text-bot"
-          scp -o StrictHostKeyChecking=no docker-compose.prod.yml nik@192.168.20.29:/opt/speech-to-text-bot/docker-compose.prod.yml
+          scp -o StrictHostKeyChecking=no docker-compose.prod.yml .env nik@192.168.20.29:/opt/speech-to-text-bot/
 
       - name: Update application
         run: |
