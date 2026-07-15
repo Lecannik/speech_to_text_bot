@@ -5,6 +5,7 @@
 
 import logging
 from typing import Optional
+# pyrefly: ignore [missing-import]
 from faster_whisper import WhisperModel
 from config import Config
 
