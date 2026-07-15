@@ -51,7 +51,7 @@ Telegram-бот для автоматического преобразовани
    cp .env.example /opt/speech-to-text-bot/.env
    nano /opt/speech-to-text-bot/.env
    ```
-   *Обязательно укажите ваш `TELEGRAM_BOT_TOKEN`.*
+    *Обязательно укажите ваш `BOT_TOKEN` (токен основного рабочего бота).*
 
 ---
 
@@ -83,8 +83,8 @@ Telegram-бот для автоматического преобразовани
 
 * `DOCKERHUB_USERNAME` — ваш логин на DockerHub.
 * `DOCKERHUB_TOKEN` — ваш Access Token (PAT) от DockerHub для авторизации при push/pull.
-* `TELEGRAM_BOT_TOKEN` — токен служебного бота, который будет присылать логи сборки.
-* `TELEGRAM_CHAT_ID` — ID чата, куда бот будет слать отчеты деплоя.
+* `TELEGRAM_BOT_TOKEN` — токен **второго** служебного бота, который используется только для отслеживания деплоя и отправки логов сборки.
+* `TELEGRAM_CHAT_ID` — ID чата, куда служебный бот будет слать отчеты деплоя.
 
 ---
 

@@ -15,12 +15,12 @@ async def main():
     logger.info("Speech-to-Text Bot Infrastructure Запущена!")
     
     # Считываем настройки для проверки
-    token = os.getenv("TELEGRAM_BOT_TOKEN")
+    token = os.getenv("BOT_TOKEN")
     model_size = os.getenv("WHISPER_MODEL_SIZE", "medium")
     device = os.getenv("WHISPER_DEVICE", "cpu")
     
     if not token:
-        logger.warning("TELEGRAM_BOT_TOKEN не задан. Бот запущен в режиме ожидания конфигурации.")
+        logger.warning("BOT_TOKEN не задан. Бот запущен в режиме ожидания конфигурации.")
     else:
         logger.info(f"Бот настроен. Ожидаемая модель Whisper: {model_size} на устройстве {device}")
 
