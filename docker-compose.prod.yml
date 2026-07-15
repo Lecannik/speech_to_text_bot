@@ -1,0 +1,31 @@
+# =======================================================
+# Docker Compose — PRODUCTION (для развертывания на сервере)
+# =======================================================
+# Этот файл НЕ собирает образы локально, а скачивает их из DockerHub.
+# Используйте на продакшн-сервере:
+#   docker compose -f docker-compose.prod.yml up -d
+#
+# Перед запуском:
+#   1. Скопируйте .env.example → .env и заполните все значения
+# =======================================================
+
+services:
+  bot:
+    image: lecannik/speech-to-text-bot:${IMAGE_TAG:-latest}
+    container_name: stt_bot
+    restart: always
+    env_file: [.env]
+    environment:
+      - PYTHONUNBUFFERED=1
+      - HF_HOME=/app/models  # Указываем путь для кэширования моделей Hugging Face (Whisper)
+    volumes:
+      - models_data:/app/models
+    networks:
+      - bot_network
+
+networks:
+  bot_network:
+    driver: bridge
+
+volumes:
+  models_data:
